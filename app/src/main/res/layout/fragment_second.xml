@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nestedScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SecondFragment" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="-161dp"
+        tools:layout_editor_absoluteY="-305dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- ImageView for displaying the cat image -->
+
+            <!-- Text views for displaying cat information -->
+
+            <TextView
+                android:id="@+id/nameTextView"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:text="Cat Name" />
+
+            <TextView
+                android:id="@+id/temperamentTextView"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:text="Temperament" />
+
+            <TextView
+                android:id="@+id/originTextView"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:text="Origin" />
+
+            <!-- Add more text views for additional information -->
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
