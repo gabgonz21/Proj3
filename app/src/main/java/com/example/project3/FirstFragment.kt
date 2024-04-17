@@ -70,7 +70,7 @@ class FirstFragment : Fragment() {
                     list.forEach{
                         DropdownMenu(onClick =
                             currentValue.value = it
-                            expanded.value = false }) {
+                            expanded.value = false )
                             Text(text = it)
 
                         }
