@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.material.Text
@@ -13,18 +15,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
-import androidx.compose.material.icons.Icons
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.*
-import androidx.compose.foundation.clickable
-
-
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.material.DropdownMenu
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 
 import com.example.project3.databinding.FragmentFirstBinding
 
@@ -41,45 +44,48 @@ class FirstFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent{
-                Spinner()
+                Column(modifier = Modifier.fillMaxSize().padding(16.dp),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.CenterHorizontally) {
+                    Spinner()
+                }
             }
         }
 
     }
 
+    @OptIn(ExperimentalMaterialApi::class)
     @Composable
     fun Spinner() {
-        val list = listOf("Cat One, Cat Two")
-        val expanded = remember{ mutableStateOf(false) }
-        val currentValue = remember {mutableStateOf(list[0]) }
+        val list = listOf("Cat One", "Cat Two")
+        var expanded by remember {mutableStateOf(false)}
+        var selectedItem by remember {mutableStateOf(list[0]) }
+        var mContext = LocalContext.current
+        
 
-        Box(modifier = Modifier.fillMaxWidth()) {
-            Row(modifier = Modifier
-                .clickable {
-                    expanded.value = !expanded.value
-                }
-                .align(Alignment.Center)){
-                Text(
-                    text = currentValue.value,
-                    style = TextStyle(color = Color.Black, fontSize = 20.sp)
-                )
-                Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = null)
-                DropdownMenu(expanded = expanded.value, onDismissRequest = {
-                    expanded.value = !expanded.value
-                }) {
-                    list.forEach{
-                        DropdownMenu(onClick =
-                            currentValue.value = it
-                            expanded.value = false }) {
-                            Text(text = it)
+    ExposedDropdownMenuBox(expanded = expanded, onExpandedChange ={expanded = !expanded}){
+        TextField(
+            value = selectedItem,
+            onValueChange = {},
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)},
+            readOnly = true,
+            textStyle = TextStyle.Default.copy(fontSize = 28.sp)
+        )
+        ExposedDropdownMenu(expanded = expanded,
+            onDismissRequest = { expanded = false }) {
 
-                        }
-                    }
-                }
+            list.forEach{
+                selectedCat -> DropdownMenuItem(onClick = {
+                    selectedItem = selectedCat
+                expanded = false
+                Toast.makeText(mContext, "" + selectedItem, Toast.LENGTH_LONG).show()
+            }) {
+                Text(text = selectedCat, fontSize = 28.sp)
             }
-
+            }
+        }
+    }
 
         }
     }
 
-}
