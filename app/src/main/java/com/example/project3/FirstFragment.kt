@@ -2,41 +2,37 @@ package com.example.project3
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.sp
-import androidx.compose.material.*
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-
+import androidx.compose.material.*
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import com.android.volley.Response
+import androidx.compose.ui.unit.sp
+import androidx.fragment.app.Fragment
 import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-
 import com.example.project3.databinding.FragmentFirstBinding
 import org.json.JSONArray
 import org.json.JSONObject
+
 
 //Spinner Fragment
 
@@ -45,23 +41,34 @@ class FirstFragment : Fragment() {
     private var _binding: FragmentFirstBinding? = null
     private val binding get() = _binding!!
 
+    private var catData = ArrayList<String>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
+
+
     ): View {
         return ComposeView(requireContext()).apply {
+            printCatData()
             setContent{
-                Column(modifier = Modifier.fillMaxSize().padding(16.dp),
+                Column(modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally) {
+
                     Spinner()
-                    printCatData()
+
 
                 }
             }
         }
 
     }
+
+
+
 
     // method to interact with API
     fun printCatData() {
@@ -83,15 +90,17 @@ class FirstFragment : Fragment() {
                     var theCat : JSONObject = catsArray.getJSONObject(i)
 
                     //now get the properties we want:  name and description
-                    Log.i("MainActivity", "Cat name: ${theCat.getString("name")}")
+                    //Log.i("MainActivity", "Cat name: ${theCat.getString("name")}")
                     //binding.catText.text = "Cat name: ${theCat.getString("name")}"
-                    Log.i("MainActivity", "Cat description: ${theCat.getString("description")}")
-                    Log.i("MainActivity", "Cat Temperment: ${theCat.getString("temperament")}")
-                    Log.i("MainActivity", "Cat Origin: ${theCat.getString("origin")}")
+                    //Log.i("MainActivity", "Cat description: ${theCat.getString("description")}")
+                    //Log.i("MainActivity", "Cat Temperment: ${theCat.getString("temperament")}")
+                    //Log.i("MainActivity", "Cat Origin: ${theCat.getString("origin")}")
+                    catData.add("${theCat.getString("name")}")
+                    //catData.add(i.toString())
                 }//end for
             },
             Response.ErrorListener {
-                //Log.i("MainActivity", "That didn't work!")
+                Log.i("MainActivity", "That didn't work!")
             })
 
 // Add the request to the RequestQueue.
@@ -119,7 +128,7 @@ class FirstFragment : Fragment() {
         ExposedDropdownMenu(expanded = expanded,
             onDismissRequest = { expanded = false }) {
 
-                list.forEach{
+            list.forEach{
                     selectedCat -> DropdownMenuItem(onClick = {
                         selectedItem = selectedCat
                     expanded = false
