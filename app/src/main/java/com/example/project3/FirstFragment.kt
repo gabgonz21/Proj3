@@ -131,6 +131,16 @@ class FirstFragment : Fragment() {
                     selectedCat -> DropdownMenuItem(onClick = {
                         selectedItem = selectedCat
                     expanded = false
+
+                val secondFragment = SecondFragment().apply {
+                    arguments = Bundle().apply{
+                        putString("selectedCat", selectedCat)
+                    }
+                }
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.bottomFragment, secondFragment)
+                    .addToBackStack(null)
+                    .commit()
                     Toast.makeText(mContext, "" + selectedItem, Toast.LENGTH_LONG).show()
                 }) {
                 Text(text = selectedCat, fontSize = 28.sp)
