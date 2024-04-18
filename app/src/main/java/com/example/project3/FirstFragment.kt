@@ -40,8 +40,8 @@ class FirstFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
     private val binding get() = _binding!!
-
-    private var catData = ArrayList<String>()
+    //var catData = ArrayList<String>()
+    val catData = mutableListOf<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,15 +72,14 @@ class FirstFragment : Fragment() {
 
     // method to interact with API
     fun printCatData() {
-        var catUrl = "https://api.thecatapi.com/v1/breeds" +
-                "?api_key=live_qbPAKVMdrw7jfRwaJdnm4Rh0sdvpQx36clCkLuFsrLCHOMMbmtGQ1TtZ6p7LTn7I"
+        var catUrl = "https://api.thecatapi.com/v1/breeds" + "?api_key=live_qbPAKVMdrw7jfRwaJdnm4Rh0sdvpQx36clCkLuFsrLCHOMMbmtGQ1TtZ6p7LTn7I"
 
         val queue = Volley.newRequestQueue(requireContext())
 
         // Request a string response from the provided URL.
         val stringRequest = StringRequest(
             Request.Method.GET, catUrl,
-            Response.Listener<String> { response ->
+            { response ->
                 var catsArray : JSONArray = JSONArray(response)
 
                 //indices from 0 through catsArray.length()-1
@@ -99,7 +98,7 @@ class FirstFragment : Fragment() {
                     //catData.add(i.toString())
                 }//end for
             },
-            Response.ErrorListener {
+            {
                 Log.i("MainActivity", "That didn't work!")
             })
 
@@ -111,7 +110,7 @@ class FirstFragment : Fragment() {
     @OptIn(ExperimentalMaterialApi::class)
     @Composable
     fun Spinner() {
-        val list = listOf("Cat One", "Cat Two")
+        val list = listOf("Choose Cat")
         var expanded by remember {mutableStateOf(false)}
         var selectedItem by remember {mutableStateOf(list[0]) }
         var mContext = LocalContext.current
@@ -128,7 +127,7 @@ class FirstFragment : Fragment() {
         ExposedDropdownMenu(expanded = expanded,
             onDismissRequest = { expanded = false }) {
 
-            list.forEach{
+            catData.forEach{
                     selectedCat -> DropdownMenuItem(onClick = {
                         selectedItem = selectedCat
                     expanded = false
